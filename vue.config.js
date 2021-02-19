@@ -1,5 +1,25 @@
 const path = require('path');
 module.exports = {
+    // 配置快捷路径
+    configureWebpack: (config) => {
+        config.resolve = {
+            // 省略文件名后缀
+            extensions:['.js','.json','.vue'],
+            alias:{
+                alias:{
+                    '@':path.resolve(_dirname, './src'),
+                }
+            }
+        }
+    },
+    // chainWebpack: config => {
+    //     config.resolve.alias
+    //         .set("@", resolve("src"))
+    //         .set("assets", resolve("src/assets"))
+    //         .set("components", resolve("src/components"))
+    //         .set("base", resolve("baseConfig"))
+    //         .set("public", resolve("public"));
+    // },
     // 基本路径 baseURL已经过时
     publicPath: process.env.NODE_ENV == "production" ? "./" : "/",
     publicPath: './',
@@ -12,8 +32,7 @@ module.exports = {
     // compiler: false,
     // webpack配置
     // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-    chainWebpack: () => { },
-    configureWebpack: () => { },
+    configureWebpack: () => {},
     // vue-loader 配置项
     // https://vue-loader.vuejs.org/en/options.html
     // vueLoader: {},
@@ -46,14 +65,14 @@ module.exports = {
     lintOnSave: false,
     // webpack-dev-server 相关配置
     devServer: {
-        hot: true,
+        hotOnly: true,
         open: true,
         disableHostCheck: true,
-        host: '',//如果是真机测试，就使用这个IP
+        host: '0.0.0.0', //如果是真机测试，就使用这个IP
         port: 8080,
         https: false,
         hotOnly: false,
-        before: app => { }
+        before: app => {}
     },
     // 第三方插件配置
     pluginOptions: {
