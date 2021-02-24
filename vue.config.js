@@ -4,10 +4,10 @@ module.exports = {
     configureWebpack: (config) => {
         config.resolve = {
             // 省略文件名后缀
-            extensions:['.js','.json','.vue'],
-            alias:{
-                alias:{
-                    '@':path.resolve(_dirname, './src'),
+            extensions: ['.js', '.json', '.vue'],
+            alias: {
+                alias: {
+                    '@': path.resolve(_dirname, './src'),
                 }
             }
         }
@@ -21,10 +21,14 @@ module.exports = {
     //         .set("public", resolve("public"));
     // },
     // 基本路径 baseURL已经过时
-    publicPath: process.env.NODE_ENV == "production" ? "./" : "/",
-    publicPath: './',
+    // publicPath: process.env.NODE_ENV == "production" ? "./" : "/",
+    // publicPath: './',
     // 输出文件目录
-    outputDir: 'dist',
+    // outputDir: 'dist',
+
+    publicPath: process.env.NODE_ENV === "production" ? "" : "/",
+    outputDir: process.env.NODE_ENV === "production" ? "dist" : "devdist",
+
     // eslint-loader 是否在保存的时候检查
     lintOnSave: true,
     // use the full build with in-browser compiler?
@@ -65,13 +69,21 @@ module.exports = {
     lintOnSave: false,
     // webpack-dev-server 相关配置
     devServer: {
-        hotOnly: true,
         open: true,
         disableHostCheck: true,
         host: '0.0.0.0', //如果是真机测试，就使用这个IP
         port: 8080,
         https: false,
-        hotOnly: false,
+        hotOnly: true,
+        proxy: {
+            '/devapi': {
+                target: 'http://www.web-jshtml.cn/productapi', //API服务器的地址
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/devapi': ''
+                }
+            }
+        },
         before: app => {}
     },
     // 第三方插件配置

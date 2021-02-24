@@ -25,3 +25,8 @@ export function validateCo(value) {
     let reg = /^[a-z0-9]{6}$/;
     return reg.test(value) ? false : true;
 }
+
+/* 
+*没使用default时,可以同时生命多个export
+*文件import引用时需要带花括号
+*/
