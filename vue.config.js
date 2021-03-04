@@ -1,25 +1,30 @@
 const path = require('path');
 module.exports = {
+    // - runtimecompiler:  template 解析 ast（抽象语法树）编译 render  —> v-dom —> ui
+    // - runtimeonly: render  —> v-dom —> ui
+    runtimeCompiler: true,
     // 配置快捷路径
     configureWebpack: (config) => {
         config.resolve = {
             // 省略文件名后缀
             extensions: ['.js', '.json', '.vue'],
             alias: {
-                alias: {
-                    '@': path.resolve(_dirname, './src'),
-                }
+                'vue': 'vue/dist/vue.js',
+                '@': path.resolve(_dirname, './src'),
             }
         }
     },
-    // chainWebpack: config => {
-    //     config.resolve.alias
-    //         .set("@", resolve("src"))
-    //         .set("assets", resolve("src/assets"))
-    //         .set("components", resolve("src/components"))
-    //         .set("base", resolve("baseConfig"))
-    //         .set("public", resolve("public"));
-    // },
+    chainWebpack: config => {
+        const svgRule = config.module.rule("svg");     
+        svgRule.uses.clear();     
+        svgRule       
+          .use("svg-sprite-loader")       
+          .loader("svg-sprite-loader")       
+          .options({         
+            symbolId: "icon-[name]",         
+            include: ["./src/icons"]       
+          });  
+    },
     // 基本路径 baseURL已经过时
     // publicPath: process.env.NODE_ENV == "production" ? "./" : "/",
     // publicPath: './',
@@ -77,7 +82,7 @@ module.exports = {
         hotOnly: true,
         proxy: {
             '/devapi': {
-                target: 'http://www.web-jshtml.cn/productapi', //API服务器的地址
+                target: 'http://www.web-jshtml.cn/productapi/token', //API服务器的地址
                 changeOrigin: true,
                 pathRewrite: {
                     '^/devapi': ''

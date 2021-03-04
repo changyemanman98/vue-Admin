@@ -184,6 +184,7 @@ export default {
     // 模块值
     const model = ref("login");
 
+    // 修改
     const loginButtonStatus = ref(true);
 
     const codeButtonStatus = reactive({
@@ -237,7 +238,7 @@ export default {
       refs.ruleForm.resetFields(); //3.0
     });
 
-    // 更改按钮状态
+    // 更改验证码按钮状态
     const updataButtonStatus = ((params) => {
       codeButtonStatus.status = params.status;
       codeButtonStatus.text = params.text;
@@ -291,6 +292,8 @@ export default {
      *提交表单
      */
     const submitForm = (formName) => {
+      
+      // 修改
       refs[formName].validate((valid) => {
         if (valid) {
           model.value === "login" ? login() : register();
@@ -299,10 +302,15 @@ export default {
           return false;
         }
       });
+      root.$router.push({
+          name:'Console',
+        })
     };
 
     /* 
     *登录
+    1422665422@qq.com
+    li1422665422
     */
     const login = (() => {
       let requestData = {
@@ -311,8 +319,13 @@ export default {
         code:ruleForm.code,
         module:'register'
       }
-      Login(requestData).then(response => {
+      root.$store.dispatch('app/login', requestData).then(response => {
         console.log(response);
+        console.log("登录成功");
+        // 页面跳转
+        root.$router.push({
+          name:'Console',
+        })  
       }).catch(error => {
         console.log(error);
       })

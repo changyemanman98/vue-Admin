@@ -1,9 +1,9 @@
 <template>
-    <div>用户列表</div>
+    <div>信息列表</div>
 </template>
 <script>
 export default {
-    name:"userIndex",
+    name:"infoIndex",
     setup(props){
 
     }
