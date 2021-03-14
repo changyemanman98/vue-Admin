@@ -1,7 +1,7 @@
 import service from "@/utils/request"
 
 /*
-*获取验证码
+* 获取验证码
 */
 export function GetSms(data){
     return service.request({
@@ -13,11 +13,11 @@ export function GetSms(data){
 }
 
 /* 
-*获取登录身份
+* 获取登录身份
 */
 
 /* 
-*登录
+* 登录
 */
 export function Login(data){
     return service.request({
@@ -28,7 +28,7 @@ export function Login(data){
 }
 
 /* 
-*注册
+* 注册
 */
 export function Register(data){
     return service.request({

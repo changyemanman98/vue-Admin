@@ -2,7 +2,7 @@
   <div id="main-wrap">
     <div class="main-content">
       <div class="content">
-        <button @click='testClick'>test</button>
+        <!-- <button @click='testClick'>test</button> -->
         <router-view />
       </div>
     </div>
@@ -14,12 +14,12 @@ import {ref, reactive} from "@vue/composition-api";
 export default {
   name: 'LayoutMain',
   setup(props, {root}){
-    const testClick = () => {
-      root.$store.dispatch('test');
-    }
+    // const testClick = () => {
+    //   root.$store.dispatch('test');
+    // }
 
     return {
-      testClick
+      // testClick
     }
   }
 };

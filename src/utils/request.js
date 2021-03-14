@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Message } from "element-ui"
+import {getToKen, getUserName} from "@/utils/app"
 
 // 创建一个axios,赋值给service
 
@@ -15,15 +16,13 @@ const service = axios.create({
 service.interceptors.request.use(function (config) {
     // 在发送请求前做什么
     // 后台需要前端这边传相关的参数(在请求头添加参数)
-    // Token
-    // userId
-    // sui
+    // Tokey
+    // UserNeme
     // 业务需求
     
     // 最终目的是在请求头添加参数
-    config.headers['Token'] = "11111";
-    config.headers['userId'] = "22222";
-    config.headers['sui'] = "33333";
+    config.headers['Tokey'] = getToKen();
+    config.headers['UserName'] = getUserName();
 
     return config;
 }, function (error) {

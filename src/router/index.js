@@ -26,7 +26,7 @@ const routes = [
     meta:{
       name:"登录"
     },
-    component: () => import("../views/Login/index.vue"),
+    component: () => import("../views/login/index.vue"),
   },
   {
     path: "/console",
@@ -74,7 +74,7 @@ const routes = [
         meta:{
           name:"信息分类"
         },
-        component: () => import("../views/Info/infoCategory.vue"),
+        component: () => import("../views/Info/category.vue"),
       }
     ]
   },

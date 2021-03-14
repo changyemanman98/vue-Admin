@@ -16,3 +16,15 @@ $secColor: rgba(245, 108, 108, 0.5);
     -ms-#{$type}: $value;
     #{$type}: $value;
 }
+
+@mixin LabelDom($align, $width, $line-height: "normal"){
+    label {
+        float: left;
+        line-height: $line-height + px;
+        width: $width + px;
+        text-align: $align;
+    }
+    .wrap-content {
+        margin-left:  $width + px;
+    }
+}
