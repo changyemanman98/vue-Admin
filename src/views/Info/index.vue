@@ -73,7 +73,11 @@
                 <template slot-scope="scope">
                     <el-button type="danger" size="mini" @click="deleteItem(scope.row.id)">删除</el-button>
                     <el-button type="success" size="mini" @click="editInfo(scope.row.id)">编辑</el-button>
-                    <el-button type="success" size="mini" @click="editInfo(scope.row.id)">编辑详情</el-button>
+                    <!-- <router-link :to="{ name:'InfoDetailed', query: {id: scope.row.id} }" class="margin-left-10">
+                        <el-button type="success" size="mini">编辑详情</el-button>
+                    </router-link> -->
+
+                    <el-button type="success" size="mini" @click="detailed(scope.row)">编辑详情</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -273,6 +277,32 @@ export default {
         infoId.value = id;
         dialog_info_edit.value = true;
     }
+
+    const detailed = (data) => {
+        // 预先存值
+            root.$store.commit("infoDetailed/UPDATA_STATE_VALUE", {
+                id:{
+                    value:data.id,
+                    session:true,
+                    sessionKey:"infoId"
+                },
+                title:{
+                    value:data.title,
+                    session:true,
+                    sessionKey:"infoTitle"
+                }
+            });
+        // root.$store.commit("infoDetailed/SET_ID", data.id);
+        // root.$store.commit("infoDetailed/SET_TITLE", data.title);
+        // 跳转页面
+        root.$router.push({
+            name: "InfoDetailed",
+            params: {
+                id: data.id,
+                title: data.title
+            }
+        })
+    }
     
     /* 
     * onMounted
@@ -303,7 +333,7 @@ export default {
         // reactive
         search_option, options, table_data, page,
         // 2.0 methods
-        handleSizeChange, handleCurrentChange, deleteItem, deleteAll, confirmDelete, getList, toDate, toCategory, handleSelectionChange, formatData, editInfo
+        handleSizeChange, handleCurrentChange, deleteItem, deleteAll, confirmDelete, getList, toDate, toCategory, handleSelectionChange, formatData, editInfo, detailed
     };
   },
 };
