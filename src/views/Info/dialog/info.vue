@@ -70,16 +70,17 @@ export default {
         const close = () => {
             data.dialog_info_flag = false;
             // emit('close', false) 回调父组件的close属性
-
-            emit('update:flag', false);
             // 回调时需要做逻辑处理的时候,不能用修饰器,反之可以用修饰器(修饰器比较简单)
-
+            emit('update:flag', false);
             // 重置表单
-            restForm();
+            resetForm();
         };
 
         const openDialog = () => {
             data.categoryOption = props.category;
+        }
+        const resetForm = () => {
+            refs.addInfoForm.resetFields();
         }
 
         const submit = () => {
@@ -87,8 +88,8 @@ export default {
                 categoryId: data.form.category,
                 title: data.form.title,
                 content: data.form.content,
-                imgUrl: "http",
-                createDate: "2020-02-02 12:00:00"
+                imgUrl: "",
+                createDate: ""
             }
             if(!data.form.category){
                 root.$message({
@@ -106,11 +107,12 @@ export default {
                     type: "success"
                 })
                 data.submitLoading = false;
-                // 重置表单
-                refs.addInfoForm.resetFields();
+                // 关闭弹窗
+                close()
+                // 回调父级方法
+                emit('getListEdit')
             }).catch(error => {
                 data.submitLoading = false;
-                refs.addInfoForm.resetFields();
             })
         }
 

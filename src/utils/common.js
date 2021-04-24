@@ -1,4 +1,4 @@
-/* 邮箱正则验证 */
+/* 时间 */
 export function timestampToTime(timestamp) {
     let now = new Date(timestamp*1000);
     let year = now.getFullYear();

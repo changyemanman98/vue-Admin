@@ -92,13 +92,8 @@
 // base64,md5,sha1 加密
 import sha1 from "js-sha1";
 import { GetSms, Register, Login } from "@/api/login";
-import { reactive, ref, isRef, toRefs, onMounted } from "@vue/composition-api";
-import {
-  stripscript,
-  validateEmail,
-  validatePass,
-  validateCo,
-} from "@/utils/validate";
+import { reactive, ref, isRef, toRefs, onMounted, onUnmounted } from "@vue/composition-api";
+import { stripscript, validateEmail, validatePass, validateCo } from "@/utils/validate";
 
 export default {
   name: "login",
@@ -196,10 +191,14 @@ export default {
     const timer = ref(null);
 
     const ruleForm = reactive({
-      username: "",
-      password: "",
+      username: "1422665422@qq.com",
+      password: "li1422665422",
       passwords: "",
       code: "",
+      // username: "131122@qq.com",
+      // password: "li131122",
+      // passwords: "",
+      // code: "",
     });
     const rules = reactive({
       username: [{ validator: validateUsername, trigger: "blur" }],
@@ -209,7 +208,7 @@ export default {
     });
 
     /* 
-    *1.不建议在一个方法里执行多个不同的事件,尽可能只做自己本身的事情,不做其他人的事情
+    *1.不建议在一个方法里执行多个不同的事件,尽可能只做自己本身的事情,不做其他的事情
     *2.尽量把重复执行的代码封装到一个方法中,通过调用函数进行执行
     */
 
@@ -245,8 +244,8 @@ export default {
     });
 
     /*
-     *获取验证码
-     */
+    * 获取验证码
+    */
     const getSms = () => {
       // 进行提示
       if (ruleForm.username == "") {
@@ -271,8 +270,7 @@ export default {
       };
 
       // 延时多长时间
-      GetSms(requestData)
-        .then((response) => {
+      GetSms(requestData).then((response) => {
           let data = response.data;
           root.$message({
             message: data.message,
@@ -284,6 +282,12 @@ export default {
           countDown(60);
         })
         .catch((error) => {
+          // 启用注册或登录按钮
+          loginButtonStatus.value = false;
+          updataButtonStatus({
+            status: false,
+            text: "再次获取"
+          });
           console.log(error);
         });
     };
@@ -292,7 +296,6 @@ export default {
      *提交表单
      */
     const submitForm = (formName) => {
-      
       // 修改
       refs[formName].validate((valid) => {
         if (valid) {
@@ -311,6 +314,9 @@ export default {
     *登录
     1422665422@qq.com
     li1422665422
+
+    131122@qq.com
+    li131122
     */
     const login = (() => {
       let requestData = {
@@ -320,14 +326,14 @@ export default {
         module:'register'
       }
       root.$store.dispatch('app/login', requestData).then(response => {
-        console.log(response);
-        console.log("登录成功");
         // 页面跳转
         root.$router.push({
           name:'Console',
         })  
       }).catch(error => {
         console.log(error);
+          clearCountDown()
+          loginButtonStatus.value = false;
       })
     });
 
@@ -350,9 +356,7 @@ export default {
           //  跳转到登录
           toggleMenu(MenuTab[0]);
           clearCountDown();
-         }).catch(error => {
-
-         })
+         }).catch(error => {})
     });
 
     /*
@@ -398,6 +402,13 @@ export default {
      */
     // 挂载完成后
     onMounted(() => {});
+      
+    /* 
+    * 销毁页面时
+    */
+    onUnmounted(() => {
+      clearInterval(timer.value);
+    })
 
     return {
       MenuTab,

@@ -85,7 +85,6 @@ export default {
         const openDialog = () => {
             data.categoryOption = props.category;
             getInfo();
-            console.log(props.id)
         }
 
         const getInfo = () => {

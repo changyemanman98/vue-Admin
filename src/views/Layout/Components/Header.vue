@@ -2,8 +2,11 @@
   <div id="header-wrap">
     <div class="pull-left header-icon" @click="navMenustate"><svg-icon iconClass="menu" className="menu" /></div>
     <div class="pull-right">
+      <div class="user-pic pull-left">
+        <img src="../../../icons/picture/hsq.jpg" alt="">
+      </div>
       <div class="user-info pull-left">{{username}}</div>
-      <div class="header-icon pull-left" @click="exit">
+      <div class="header-icon pull-left" @click="logout">
         <svg-icon iconClass="exit" className="exit" />
       </div>
     </div>
@@ -21,18 +24,25 @@ export default{
     }
 
     // 退出
-    const exit = () => {
-      root.$store.dispatch('app/exit').then(() => {
-        root.$router.push({
-          name: 'Login'
-        })
+    const logout = () => {
+      root.$store.dispatch('app/logout').then(response => {
+        console.log(response)
+        if(response.resCode === 0){
+          root.$message({
+            message: "退出成功!",
+            type: "success"
+          })
+          root.$router.push({
+              name: 'Login'
+          })
+        }
       })
     }
 
     return{
       navMenustate,
       username,
-      exit
+      logout
     }
   }
 }
@@ -45,6 +55,7 @@ export default{
   left: $navMenu;
   top: 0;
   right: 0;
+  z-index: 999;
   height: 75px;
   background-color: #fff;
   @include webkit(box-shadow,0 3px 16px 0 rgba(0, 0, 0, 0.1));
@@ -63,7 +74,7 @@ export default{
 
 .user-info{
   height: 100%;
-  padding: 0 32px;
+  padding: 0 26px;
   border-right: 1px solid #ededed;
   + .header-icon{
     padding: 0 28px;
@@ -80,5 +91,17 @@ export default{
   #header-wrap{
     left: $navMenuMin;
   }
+}
+
+.user-pic{
+  width: 55px;
+  height: 55px;
+  margin-top: 10px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-pic img{
+  width: 100%;
 }
 </style>

@@ -2,8 +2,13 @@
   <div id="main-wrap">
     <div class="main-content">
       <div class="content">
-        <!-- <button @click='testClick'>test</button> -->
-        <router-view />
+        <!-- 子路由显示区 -->
+        <keep-alive>
+          <!-- 需要缓存 -->
+          <router-view v-if="$route.meta.keepAlice" />
+        </keep-alive>
+        <!-- 不需要缓存 -->
+          <router-view v-if="!$route.meta.keepAlice" />
       </div>
     </div>
   </div>
@@ -28,16 +33,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/main.scss";
 #main-wrap {
-    height: 100vh;
+    height:100%;
     background-color: rgba(20, 20, 20, 0.1);
-//   position: fixed;
-//   top: 75px;
-//   left: $navMenu;
-//   right: 0;
-//   bottom: 0;
-//   -webkit-box-sizing: border;
-//   border: 30px solid #f7f7f7;
-//   border-bottom: none;
 }
 
 .main-content {
@@ -46,6 +43,7 @@ export default {
   padding-top: $layoutHeader + 30;
   padding-left: $navMenu + 30;
   padding-right: 30px;
+  padding-bottom: 30px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   @include webkit(transition,all 0.3s ease 0s)

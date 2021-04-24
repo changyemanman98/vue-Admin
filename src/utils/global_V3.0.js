@@ -1,5 +1,5 @@
 import { MessageBox } from 'element-ui';
-import { ref, reactive } from "@vue/composition-api";
+import { ref } from "@vue/composition-api";
 export function global(){
   const str = ref('');
   const confirm = (root,params) => {
@@ -13,10 +13,6 @@ export function global(){
         params.fn && params.fn(params.id || '');
       }).catch(() => {
         params.catchFn && params.catchFn();
-        // root.$message({
-        //   type: 'info',
-        //   message: '已取消删除'
-        // });
       });
   }
 

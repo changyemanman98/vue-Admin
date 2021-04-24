@@ -57,7 +57,7 @@
             </el-col>
             <el-col :span="3" style="height: 40px;">&nbsp;</el-col>
             <el-col :span="2">
-            <el-button type="danger" class="pull-right" style="width: 100%;" @click="dialog_info = true;">新增</el-button>
+            <el-button type="danger" class="pull-right" style="width: 100%;" @click="dialog_info = true;" v-btnPerm="'info:add'">新增</el-button>
             </el-col>
         </el-row>
         <div class="black-space-30"></div>
@@ -71,13 +71,9 @@
             <el-table-column prop="user" label="管理员" width="115"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="danger" size="mini" @click="deleteItem(scope.row.id)">删除</el-button>
-                    <el-button type="success" size="mini" @click="editInfo(scope.row.id)">编辑</el-button>
-                    <!-- <router-link :to="{ name:'InfoDetailed', query: {id: scope.row.id} }" class="margin-left-10">
-                        <el-button type="success" size="mini">编辑详情</el-button>
-                    </router-link> -->
-
-                    <el-button type="success" size="mini" @click="detailed(scope.row)">编辑详情</el-button>
+                    <el-button type="danger" size="mini" @click="deleteItem(scope.row.id)" v-btnPerm="'info:del'" class="hiden-button">删除</el-button>
+                    <el-button type="success" size="mini" @click="editInfo(scope.row.id)" v-btnPerm="'info:edit'" class="hiden-button">编辑</el-button>
+                    <el-button type="success" size="mini" @click="detailed(scope.row)" v-btnPerm="'info:detailed'" class="hiden-button">编辑详情</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -94,7 +90,7 @@
                     background
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :page-sizes="[3, 5, 6, 8]"
+                    :page-sizes="[10, 20, 30]"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
                 </el-pagination>
@@ -102,7 +98,7 @@
         </el-row>
 
         <!-- 新增弹窗 修饰器 :flag.sync -->
-        <DialogInfo :flag.sync="dialog_info" :category="options.category" />
+        <DialogInfo :flag.sync="dialog_info" :category="options.category" @getListEdit="getList" />
         <!-- 修改弹窗 -->
         <DialogEditInfo :flag.sync="dialog_info_edit" :id="infoId" :category="options.category" @getListEdit="getList" />
   </div>
@@ -126,7 +122,9 @@ export default {
     * data
     */
    const data = reactive({
-       
+       configOption: {
+           init: ["id", "title"]
+       }
    })
 
     /* 
@@ -136,9 +134,9 @@ export default {
     const dialog_info_edit = ref(false);
     const category_value = ref("");
     const date_value = ref("");
+    const search_keyWork = ref("");
 
     const search_key = ref("id");
-    const search_keyWork = ref("");
     const total = ref(0);
     const loadingData = ref(false);
     const deleteInfoId = ref("");
@@ -153,7 +151,7 @@ export default {
     // 页码
     const page = reactive({
         pageNumber: 1,
-        pageSize: 3
+        pageSize: 10
     })
     
     // 搜索关键词
@@ -193,6 +191,7 @@ export default {
 
         GetList(requestData).then(response => {
             let data = response.data.data;
+            console.log(data)
             // 更新数据
             table_data.item = data.data;
             // 页码统计数据
@@ -220,6 +219,7 @@ export default {
         if(search_keyWork.value){
             requestData[search_key.value] = search_keyWork.value;
         }
+        console.log(requestData)
         return requestData;
     }
 
@@ -340,7 +340,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/styles/config.scss";
-
 .label-wrap {
     &.category{
         @include LabelDom(left, 60, 40);
@@ -351,5 +350,10 @@ export default {
     &.key-work{
         @include LabelDom(right, 99, 40);
     }
+}
+</style>
+<style>
+button.hiden-button{
+    display: none;
 }
 </style>

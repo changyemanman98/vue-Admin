@@ -6,15 +6,18 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import VueCompositionApi from "@vue/composition-api"; 
 import "./router/promit"
-// 自定义全局方法
-// import global from "@/utils/global"
 // 自定义全局组件
 import "./icons"
+// 全局方法引入按钮权限
+import { buttonPermission } from "@/utils/buttonPermission";
+// 自定义指令处理按钮权限
+import "@/utils/buttonPerm";
 
-// Vue.use(global);
-Vue.use(VueCompositionApi);
+Vue.prototype.btnPerm = buttonPermission;
 Vue.use(ElementUI);
+Vue.use(VueCompositionApi);
 Vue.config.productionTip = false;
+
 
 
 // runtime(运行模式)

@@ -13,7 +13,6 @@ Vue.component('svg-icon',Svgicon);
 */
 const req = require.context('./svg',false,/\.svg$/) //正则表示读取以.svg格式的文件
 const requireAll = requireContext => {
-  console.log(requireContext.keys().map(requireContext))
   return requireContext.keys().map(requireContext)
 }
 requireAll(req)

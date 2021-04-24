@@ -1,15 +1,21 @@
-import { Login } from "@/api/login";
+import { Login, Logout } from "@/api/login";
 import { setToKen, setUserName, getUserName, removeToKen, removeUserName } from "@/utils/app";
 
 const state = {
+  roles: [],
+  buttonPermission: [],
   isCollapse: JSON.parse(sessionStorage.getItem('isCollapse')) || false,
   to_ken: '',
-  username: getUserName() || ''
+  username: getUserName() || '',
+  nav:[]
 };
 
 const getters = {  //computed
   isCollapse: state => state.isCollapse,
-  username: state => state.username
+  username: state => state.username,
+  roles: state => state.roles,
+  buttonPermission: state => state.buttonPermission,
+  nav: state => state.nav
 };
 
 const mutations = {   //必须的 同步 没有回调处理事情
@@ -22,6 +28,16 @@ const mutations = {   //必须的 同步 没有回调处理事情
   },
   SET_USERNAME(state, value){
     state.username = value;
+  },
+  SET_ROLES(state, value){
+      state.roles = value;
+  },
+  SET_BUTTON(state, value){
+      state.buttonPermission = value;
+  },
+  // 保存当前路由
+  SET_NAV(state, value){
+    state.nav = value;
   }
 };
 
@@ -49,13 +65,17 @@ const actions = {   //可以回调处理事情
   },
 
   // 退出
-  exit({commit}){
+  logout({commit}){
     return new Promise((resolve, reject) => {
-      removeUserName();
-      removeToKen();
-      commit('SET_USERNAME', '');
-      commit('SET_TOKEN', '');
-      resolve();
+      Logout().then(response => {
+        const data = response.data;
+        removeUserName();
+        removeToKen();
+        commit('SET_USERNAME', '');
+        commit('SET_TOKEN', '');
+        commit('SET_ROLES', []);
+        resolve(data);
+      })
     })
   }
 };

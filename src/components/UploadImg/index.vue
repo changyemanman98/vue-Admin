@@ -40,7 +40,6 @@ export default {
         })
         const handleAvatarSuccess = (res, file) =>  {
             let image = `${root.$store.getters["common/qiniuUrl"]}${res.key}`;
-            console.log(image)
             data.image = image;
             emit("update:imgUrl", image);
         }

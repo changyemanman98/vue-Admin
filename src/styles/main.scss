@@ -11,6 +11,9 @@ ul.menu-tab{
     text-align: center;
 }
 
+// overflow
+.overflow-h { overflow: hidden; }
+
 .black-space-30 {height: 30px;}
 
 @for $i from 1 through 110 {

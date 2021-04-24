@@ -7,6 +7,8 @@
       default-active="2"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
+      :unique-opened="true"
+      :default-active="navRoute"
       background-color="transparent"
       text-color="#fff"
       active-text-color="#fff"
@@ -34,19 +36,12 @@
 </template>
 
 <script>
-import {
-  reactive,
-  ref,
-  isRef,
-  toRefs,
-  onMounted,
-  computed,
-} from "@vue/composition-api";
+import { reactive, ref, isRef, toRefs, onMounted, computed } from "@vue/composition-api";
 export default {
   name: "navMenu",
   setup(props, { root }) {
     /*
-     *data 数据
+     * data 数据
      */
     const routers = reactive(root.$router.options.routes);
 
@@ -55,9 +50,16 @@ export default {
      */
     const isCollapse = computed(() => root.$store.state.app.isCollapse);
 
+    /* 
+    * 刷新时保存导航效果 
+    */
+    const navRoute = ref(root.$store.state.app.nav[1].path)
+    
+    
     return {
       isCollapse,
       routers,
+      navRoute
     };
   },
 };

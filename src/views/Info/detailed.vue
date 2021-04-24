@@ -26,7 +26,7 @@
 
 <script>
 import { GetList, EditInfo } from "@/api/news";
-import { ref, reactive, onMounted } from "@vue/composition-api";
+import { ref, reactive, onMounted, onActivated, onDeactivated } from "@vue/composition-api";
 import {timestampToTime} from "@/utils/common";
 // 富文本编辑器
 import { quillEditor } from "vue-quill-editor";
@@ -113,6 +113,8 @@ export default {
                 type: 'success'
             })
             data.submitLoading = false;
+            // 返回到上一个路由页面, 并且刷新该页面不会影响路由返回
+            root.$router.go(-1);
         }).catch(error => {
             data.submitLoading = false;
             refs.addInfoForm.resetFields();
@@ -120,8 +122,16 @@ export default {
     }
 
     onMounted(() => {
-        getInfoCategory(),
+        getInfoCategory()
+    })
+    // 与keep-alice配合使用, 第一次进入页面触发 onMounted 和 onActivated 第二次进入页面只触发 onActivated
+    onActivated(() => {
+        data.id = root.$route.params.id || root.$store.getters["infoDetailed/infoId"];
         getInfo()
+
+    })
+    onDeactivated(() => {
+      
     })
 
     return{
